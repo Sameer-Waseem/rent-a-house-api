@@ -1,0 +1,26 @@
+{
+  "name": "rent-a-house",
+  "version": "1.0.0",
+  "description": "Renting a house on the basis of your needs",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sameer-Waseem/rent-a-house.git"
+  },
+  "author": "Sameer M. Waseem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sameer-Waseem/rent-a-house/issues"
+  },
+  "homepage": "https://github.com/Sameer-Waseem/rent-a-house#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "mongoose": "^8.12.1",
+    "nodemon": "^3.1.9"
+  }
+}
