@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Sameer-Waseem/rent-a-house#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "joi": "^17.13.3",
     "mongoose": "^8.12.1",

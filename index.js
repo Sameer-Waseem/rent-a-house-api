@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const cors = require("cors");
 const houses = require("./routes/houses");
 
 const app = express();
@@ -10,6 +11,7 @@ mongoose
   .catch(() => console.log("Could not connected to database..."));
 
 app.use(express.json());
+app.use(cors());
 app.use("/api/house", houses);
 
 const port = process.env.PORT || 3000;
