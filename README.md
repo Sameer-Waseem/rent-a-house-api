@@ -1,1 +1,1 @@
-Renting a house on the basis of your needs
+You can post your house details for renting purpose
