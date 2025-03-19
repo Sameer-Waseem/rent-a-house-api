@@ -2,96 +2,101 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const houseSchema = new mongoose.Schema({
-  house_number: {
+  area: {
     type: Number,
     min: 1,
     max: 99999,
     required: true,
   },
-  street: {
+  type: {
+    type: String,
+    enum: ["Appartement", "Plot"],
+    required: true,
+  },
+  rent: {
     type: Number,
     min: 1,
     max: 99999,
     required: true,
   },
-  sector: {
+  highlights: {
+    type: String,
+    minlength: 3,
+    maxlength: 55,
+    required: true,
+  },
+  description: {
+    type: String,
+    minlength: 10,
+    maxlength: 1055,
+  },
+  rooms: {
     type: Number,
     min: 1,
     max: 255,
-    required: false,
-  },
-  block: {
-    type: String,
-    minlength: 1,
-    maxlength: 255,
-    required: false,
-  },
-  area: {
-    type: String,
-    minlength: 3,
-    maxlength: 255,
     required: true,
   },
-  postal_code: {
+  bathrooms: {
     type: Number,
     min: 1,
-    max: 99999,
+    max: 255,
     required: true,
   },
-  city: {
-    type: String,
-    minlength: 1,
-    maxlength: 255,
-    required: true,
+  water_supply: {
+    type: Boolean,
+    default: false,
   },
-  district: {
-    type: String,
-    minlength: 1,
-    maxlength: 255,
-    required: true,
+  gas_supply: {
+    type: Boolean,
+    default: false,
   },
-  country: {
-    type: String,
-    minlength: 1,
-    maxlength: 255,
-    required: true,
+  electricity_supply: {
+    type: Boolean,
+    default: false,
   },
 });
 
 const House = mongoose.model("House", houseSchema);
 
-function validatePost(body) {
-  const schema = Joi.object({
-    house_number: Joi.number().integer().min(1).max(99999).required(),
-    street: Joi.number().integer().min(1).max(99999).required(),
-    sector: Joi.number().integer().min(1).max(255),
-    block: Joi.string().min(1).max(255),
-    area: Joi.string().min(3).max(255).required(),
-    postal_code: Joi.number().integer().min(1).max(99999).required(),
-    city: Joi.string().min(1).max(255).required(),
-    district: Joi.string().min(1).max(255).required(),
-    country: Joi.string().min(1).max(255).required(),
-  });
+function validate(body, type) {
+  const isPosting = type === "post";
 
-  return schema.validate(body);
-}
-
-function validateUpdate(body) {
   const schema = Joi.object({
-    house_number: Joi.number().integer().min(1).max(99999),
-    street: Joi.number().integer().min(1).max(99999),
-    sector: Joi.number().integer().min(1).max(255),
-    block: Joi.string().min(1).max(255),
-    area: Joi.string().min(3).max(255),
-    postal_code: Joi.number().integer().min(1).max(99999),
-    city: Joi.string().min(1).max(255),
-    district: Joi.string().min(1).max(255),
-    country: Joi.string().min(1).max(255),
+    area: Joi.number()
+      .integer()
+      .min(1)
+      .max(99999)
+      .required(isPosting ? true : false),
+    type: Joi.string()
+      .valid("Appartement", "Plot")
+      .required(isPosting ? true : false),
+    rent: Joi.number()
+      .integer()
+      .min(1)
+      .max(99999)
+      .required(isPosting ? true : false),
+    highlights: Joi.string()
+      .min(3)
+      .max(55)
+      .required(isPosting ? true : false),
+    description: Joi.string().min(10).max(1055),
+    rooms: Joi.number()
+      .integer()
+      .min(1)
+      .max(255)
+      .required(isPosting ? true : false),
+    bathrooms: Joi.number()
+      .integer()
+      .min(1)
+      .max(255)
+      .required(isPosting ? true : false),
+    water_supply: Joi.boolean().default(false),
+    gas_supply: Joi.boolean().default(false),
+    electricity_supply: Joi.boolean().default(false),
   });
 
   return schema.validate(body);
 }
 
 module.exports.House = House;
-module.exports.validatePost = validatePost;
-module.exports.validateUpdate = validateUpdate;
+module.exports.validate = validate;

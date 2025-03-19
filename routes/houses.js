@@ -1,5 +1,5 @@
 const express = require("express");
-const { House, validatePost, validateUpdate } = require("../models/house");
+const { House, validate } = require("../models/house");
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { error } = validatePost(req.body);
+    const { error } = validate(req.body, "post");
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { error } = validateUpdate(req.body);
+    const { error } = validate(req.body, "update");
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
