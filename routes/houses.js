@@ -1,10 +1,10 @@
 const express = require("express");
-const { House, validate } = require("../models/house");
+const { House, validatePost, validateUpdate } = require("../models/house");
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
   try {
-    const house = await House.findById(req.params.id);
+    const house = await House.findById(req.params.id).select({ __v: 0 });
     if (house) {
       return res.status(200).json({ house });
     } else {
@@ -19,7 +19,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const houses = await House.find();
+    const houses = await House.find().select({ __v: 0 });
     return res.status(200).json({ houses });
   } catch (error) {
     return res.status(400).json({ error });
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { error } = validate(req.body, "post");
+    const { error } = validatePost(req.body, "post");
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { error } = validate(req.body, "update");
+    const { error } = validateUpdate(req.body, "update");
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }

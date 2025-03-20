@@ -58,38 +58,32 @@ const houseSchema = new mongoose.Schema({
 
 const House = mongoose.model("House", houseSchema);
 
-function validate(body, type) {
-  const isPosting = type === "post";
-
+function validatePost(body) {
   const schema = Joi.object({
-    area: Joi.number()
-      .integer()
-      .min(1)
-      .max(99999)
-      .required(isPosting ? true : false),
-    type: Joi.string()
-      .valid("Appartement", "Plot")
-      .required(isPosting ? true : false),
-    rent: Joi.number()
-      .integer()
-      .min(1)
-      .max(99999)
-      .required(isPosting ? true : false),
-    highlights: Joi.string()
-      .min(3)
-      .max(55)
-      .required(isPosting ? true : false),
+    area: Joi.number().integer().min(1).max(99999).required(),
+    type: Joi.string().valid("Appartement", "Plot").required(),
+    rent: Joi.number().integer().min(1).max(99999).required(),
+    highlights: Joi.string().min(3).max(55).required(),
     description: Joi.string().min(10).max(1055),
-    rooms: Joi.number()
-      .integer()
-      .min(1)
-      .max(255)
-      .required(isPosting ? true : false),
-    bathrooms: Joi.number()
-      .integer()
-      .min(1)
-      .max(255)
-      .required(isPosting ? true : false),
+    rooms: Joi.number().integer().min(1).max(255).required(),
+    bathrooms: Joi.number().integer().min(1).max(255).required(),
+    water_supply: Joi.boolean().default(false),
+    gas_supply: Joi.boolean().default(false),
+    electricity_supply: Joi.boolean().default(false),
+  });
+
+  return schema.validate(body);
+}
+
+function validateUpdate(body) {
+  const schema = Joi.object({
+    area: Joi.number().integer().min(1).max(99999),
+    type: Joi.string().valid("Appartement", "Plot"),
+    rent: Joi.number().integer().min(1).max(99999),
+    highlights: Joi.string().min(3).max(55),
+    description: Joi.string().min(10).max(1055),
+    rooms: Joi.number().integer().min(1).max(255),
+    bathrooms: Joi.number().integer().min(1).max(255),
     water_supply: Joi.boolean().default(false),
     gas_supply: Joi.boolean().default(false),
     electricity_supply: Joi.boolean().default(false),
@@ -99,4 +93,5 @@ function validate(body, type) {
 }
 
 module.exports.House = House;
-module.exports.validate = validate;
+module.exports.validatePost = validatePost;
+module.exports.validateUpdate = validateUpdate;
