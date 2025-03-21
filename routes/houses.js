@@ -6,7 +6,7 @@ router.get("/:id", async (req, res) => {
   try {
     const house = await House.findById(req.params.id).select({ __v: 0 });
     if (house) {
-      return res.status(200).json({ house });
+      return res.status(200).json(house);
     } else {
       return res
         .status(404)
@@ -20,7 +20,7 @@ router.get("/:id", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const houses = await House.find().select({ __v: 0 });
-    return res.status(200).json({ houses });
+    return res.status(200).json(houses);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
 
     let house = new House(req.body);
     house = await house.save();
-    return res.status(200).json({ house });
+    return res.status(200).json(house);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -52,7 +52,7 @@ router.put("/:id", async (req, res) => {
       new: true,
     });
     if (house) {
-      return res.status(200).json({ house });
+      return res.status(200).json(house);
     } else {
       return res
         .status(404)
@@ -67,7 +67,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const house = await House.findByIdAndDelete(req.params.id);
     if (house) {
-      return res.status(200).json({ house });
+      return res.status(200).json(house);
     } else {
       return res
         .status(404)
