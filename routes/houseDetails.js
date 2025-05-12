@@ -1,16 +1,22 @@
 const express = require("express");
-const { House, validatePost, validateUpdate } = require("../models/house");
+const {
+  HouseDetails,
+  validatePost,
+  validateUpdate,
+} = require("../models/houseDetails");
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
   try {
-    const house = await House.findById(req.params.id).select({ __v: 0 });
-    if (house) {
-      return res.status(200).json(house);
+    const houseDetail = await HouseDetails.findById(req.params.id).select({
+      __v: 0,
+    });
+    if (houseDetail) {
+      return res.status(200).json(houseDetail);
     } else {
       return res
         .status(404)
-        .json({ message: "House with the given id ws not found!" });
+        .json({ message: "House details with the given id ws not found!" });
     }
   } catch (error) {
     return res.status(400).json({ error });
@@ -19,8 +25,8 @@ router.get("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const houses = await House.find().select({ __v: 0 });
-    return res.status(200).json(houses);
+    const houseDetails = await HouseDetails.find().select({ __v: 0 });
+    return res.status(200).json(houseDetails);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -33,10 +39,11 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    let house = new House(req.body);
-    house = await house.save();
-    return res.status(200).json(house);
+    let houseDetail = new HouseDetails(req.body);
+    houseDetail = await houseDetail.save();
+    return res.status(200).json(houseDetail);
   } catch (error) {
+    console.log(error);
     return res.status(400).json({ error });
   }
 });
@@ -48,15 +55,19 @@ router.put("/:id", async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const house = await House.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    if (house) {
-      return res.status(200).json(house);
+    const houseDetail = await HouseDetails.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    if (houseDetail) {
+      return res.status(200).json(houseDetail);
     } else {
       return res
         .status(404)
-        .json({ message: "House with the given id ws not found!" });
+        .json({ message: "House details with the given id ws not found!" });
     }
   } catch (error) {
     return res.status(400).json({ error });
@@ -65,13 +76,13 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const house = await House.findByIdAndDelete(req.params.id);
-    if (house) {
-      return res.status(200).json(house);
+    const houseDetail = await HouseDetails.findByIdAndDelete(req.params.id);
+    if (houseDetail) {
+      return res.status(200).json(houseDetail);
     } else {
       return res
         .status(404)
-        .json({ message: "House with the given id ws not found!" });
+        .json({ message: "House details with the given id ws not found!" });
     }
   } catch (error) {
     return res.status(400).json({ error });

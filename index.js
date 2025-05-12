@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
-const houses = require("./routes/houses");
+const houseDetails = require("./routes/houseDetails");
 
 const app = express();
 
@@ -12,7 +12,7 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
-app.use("/api/house", houses);
+app.use("/api/house-detail", houseDetails);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
