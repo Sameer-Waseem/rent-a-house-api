@@ -3,11 +3,26 @@ const {
   HouseDetails,
   validatePost,
   validateUpdate,
+  validateMongooseId,
 } = require("../models/houseDetails");
+
 const router = express.Router();
+
+router.get("/", async (req, res) => {
+  try {
+    const houseDetails = await HouseDetails.find().select({ __v: 0 });
+    return res.status(200).json(houseDetails);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+});
 
 router.get("/:id", async (req, res) => {
   try {
+    if (!validateMongooseId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid id!" });
+    }
+
     const houseDetail = await HouseDetails.findById(req.params.id).select({
       __v: 0,
     });
@@ -18,15 +33,6 @@ router.get("/:id", async (req, res) => {
         .status(404)
         .json({ message: "House details with the given id ws not found!" });
     }
-  } catch (error) {
-    return res.status(400).json({ error });
-  }
-});
-
-router.get("/", async (req, res) => {
-  try {
-    const houseDetails = await HouseDetails.find().select({ __v: 0 });
-    return res.status(200).json(houseDetails);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -50,6 +56,10 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
+    if (!validateMongooseId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid id!" });
+    }
+
     const { error } = validateUpdate(req.body, "update");
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
@@ -76,6 +86,10 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    if (!validateMongooseId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid id!" });
+    }
+
     const houseDetail = await HouseDetails.findByIdAndDelete(req.params.id);
     if (houseDetail) {
       return res.status(200).json(houseDetail);

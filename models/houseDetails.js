@@ -96,6 +96,11 @@ function validateUpdate(body) {
   return schema.validate(body);
 }
 
+function validateMongooseId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
+
 module.exports.HouseDetails = HouseDetails;
 module.exports.validatePost = validatePost;
 module.exports.validateUpdate = validateUpdate;
+module.exports.validateMongooseId = validateMongooseId;
