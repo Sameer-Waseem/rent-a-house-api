@@ -10,7 +10,9 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const houseDetails = await HouseDetails.find().select({ __v: 0 });
+    const houseDetails = await HouseDetails.find()
+      .sort(req.query.sort_by)
+      .select({ __v: 0 });
     return res.status(200).json(houseDetails);
   } catch (error) {
     return res.status(400).json({ error });
