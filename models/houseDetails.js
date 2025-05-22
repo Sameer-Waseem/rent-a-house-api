@@ -10,7 +10,7 @@ const houseDetailsSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["apartement", "plot"],
+    enum: ["apartment", "plot"],
     required: true,
   },
   rent: {
@@ -65,7 +65,7 @@ const HouseDetails = mongoose.model(
 function validatePost(body) {
   const schema = Joi.object({
     area: Joi.number().integer().min(1).max(99999).required(),
-    type: Joi.string().valid("apartement", "plot").required(),
+    type: Joi.string().valid("apartment", "plot").required(),
     rent: Joi.number().integer().min(1).max(999999).required(),
     highlights: Joi.string().min(3).max(55).required(),
     description: Joi.string().min(10).max(1055),
@@ -82,7 +82,7 @@ function validatePost(body) {
 function validateUpdate(body) {
   const schema = Joi.object({
     area: Joi.number().integer().min(1).max(99999),
-    type: Joi.string().valid("apartement", "plot"),
+    type: Joi.string().valid("apartment", "plot"),
     rent: Joi.number().integer().min(1).max(999999),
     highlights: Joi.string().min(3).max(55),
     description: Joi.string().min(10).max(1055),
